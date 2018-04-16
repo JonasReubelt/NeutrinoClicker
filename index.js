@@ -1,3 +1,5 @@
+import "bootstrap"
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { h, app } from "hyperapp"
 
 const state = {
