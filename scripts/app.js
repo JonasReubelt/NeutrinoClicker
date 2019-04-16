@@ -5,6 +5,8 @@ var optical_coupling = false;
 var reflector_rings = false;
 var number_of_doms = 1;
 
+var cash = 0;
+var cash_per_click = 1;
 var fps = 60;
 
 var rel_detector_width = .5;
@@ -15,16 +17,44 @@ var dom_height = 100;
 
 window.onload = function(){
     draw_detector();
+    draw_cash();
     setInterval(update, 1000./fps);
     document.addEventListener("click", click);
 }
 
 function update(){
   draw_detector();
+  draw_cash();
+  draw_multi_upgrade();
 }
 
-function click(){
-  number_of_doms += 1;
+function click(e){
+  var cursor_x = e.clientX;     // Get the horizontal coordinate
+  var cursor_y = e.clientY;     // Get the vertical coordinate
+  if (cash >= 100 && cursor_x >  ((screen_width * (1 - rel_detector_width) / 2)) && cursor_x <  ((screen_width * (1 - rel_detector_width) / 2) + 200) && cursor_y < 50){
+    dom_type = "multi";
+    cash -= 100;
+    cash_per_click *= 3;
+  }
+  cash += cash_per_click;
+}
+
+function draw_cash(){
+  cdx.font = "30px Arial";
+  cdx.fillStyle = 'black';
+  cdx.fillText("Cash: " + cash.toString(), 400, 50);
+}
+
+function draw_multi_upgrade(){
+  if (dom_type == "single"){
+    cdx.fillStyle = "black";
+    cdx.fillRect(0, 0, 200, 50);
+    cdx.fillStyle = "white";
+    cdx.fillRect(5, 5, 190, 40);
+    cdx.font = "20px Arial";
+    cdx.fillStyle = 'black';
+    cdx.fillText("upgrade to multi dom", 5, 30);
+  }
 }
 
 function draw_detector(){
